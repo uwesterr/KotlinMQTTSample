@@ -6,12 +6,13 @@ import com.example.anoopm.mqtt.protocols.UIUpdaterInterface
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.util.*
-
+import com.example.anoopm.mqtt.MainActivity
 class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Context, val uiUpdater: UIUpdaterInterface?) {
 
     private var client = MqttAndroidClient(context,connectionParams.host,connectionParams.clientId + id(context))
     private var uniqueID:String? = null
     private val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
+    public var pitchFor =""
 
     init {
 
@@ -26,6 +27,9 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
             override fun messageArrived(topic:String, mqttMessage: MqttMessage) {
                 Log.w("Mqtt", mqttMessage.toString())
                 uiUpdater?.update(mqttMessage.toString())
+                // mainActivity.sendUweMessage(topic,mqttMessage.toString())
+                pitchFor=mqttMessage.toString()
+
             }
             override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {
             }
@@ -137,11 +141,12 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
 
     }
 
-    fun publish(message:String){
+    fun publish(topic: String, message:String){
         try
         {
-                var msg = "Android says:" + message
-                client.publish(this.connectionParams.topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
+                // var msg = "Android says:" + topic + message
+            var msg = message
+                client.publish(topic,msg.toByteArray(),0,false,null,object :IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("Mqtt", "Publish Success!")
                     uiUpdater?.updateStatusViewWith("Published to Topic")

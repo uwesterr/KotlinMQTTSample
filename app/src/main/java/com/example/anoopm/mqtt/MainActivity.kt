@@ -8,6 +8,7 @@ import com.example.anoopm.mqtt.manager.MQTTmanager
 import com.example.anoopm.mqtt.protocols.UIUpdaterInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
 
@@ -91,11 +92,14 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     fun imuOffset(view: View){
         // mqttManager?.publish()
 
-       mqttManager?.pitchFor
        // messageField.setText("Mark is the king" + mqttManager.pitchFor.toString())
         //messageField.setTopic
+        var offsetJson= JSONObject()
+        offsetJson.put("ptich",mqttManager?.pitch.toString() )
+        offsetJson.put("roll",mqttManager?.pitch.toString() )
         var topicSend = "IMU/offset"
-        mqttManager?.publish(topicSend.toString(),mqttManager?.pitchFor.toString())
+        var msg = mqttManager?.pitch.toString() + mqttManager?.roll.toString()
+        mqttManager?.publish(topicSend.toString(), offsetJson.toString())
 
 
     }

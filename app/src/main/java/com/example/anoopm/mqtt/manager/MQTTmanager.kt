@@ -12,7 +12,8 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
     private var client = MqttAndroidClient(context,connectionParams.host,connectionParams.clientId + id(context))
     private var uniqueID:String? = null
     private val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
-    public var pitchFor =""
+    public var pitch = ""
+    public var roll = ""
 
     init {
 
@@ -28,7 +29,11 @@ class MQTTmanager (val connectionParams: MQTTConnectionParams, val context: Cont
                 Log.w("Mqtt", mqttMessage.toString())
                 uiUpdater?.update(mqttMessage.toString())
                 // mainActivity.sendUweMessage(topic,mqttMessage.toString())
-                pitchFor=mqttMessage.toString()
+                if (topic == "IMU/pitch"){
+                    pitch =  mqttMessage.toString()
+                } else if (topic == "IMU/roll") {
+                    roll = mqttMessage.toString()
+                }
 
             }
             override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {

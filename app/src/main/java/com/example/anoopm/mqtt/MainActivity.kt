@@ -7,6 +7,8 @@ import com.example.anoopm.mqtt.manager.MQTTConnectionParams
 import com.example.anoopm.mqtt.manager.MQTTmanager
 import com.example.anoopm.mqtt.protocols.UIUpdaterInterface
 import kotlinx.android.synthetic.main.activity_main.*
+import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), UIUpdaterInterface {
 
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     override fun update(message: String) {
-
+        println("Fun was called")
         var text = messageHistoryView.text.toString()
         var newText = """
             $text
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         messageHistoryView.setSelection(messageHistoryView.text.length)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,6 +55,7 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
         // Enable send button and message textfield only after connection
         resetUIWithConnection(false)
     }
+
 
     fun connect(view: View){
 
@@ -68,9 +72,37 @@ class MainActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     fun sendMessage(view: View){
+        var topicSend = "IMU/reset"
+        mqttManager?.publish(topicSend.toString(),messageField.text.toString())
 
-        mqttManager?.publish(messageField.text.toString())
-
-        messageField.setText("")
     }
+
+    fun sendUweMessage(topic: String, message: String){
+        // mqttManager?.publish()
+
+
+        //messageField.setTopic
+        var topicSend = "IMU/offset"
+        //mqttManager?.publish(topicSend.toString(),messageField.text.toString())
+
+
+    }
+
+
+    fun imuOffset(view: View){
+        // mqttManager?.publish()
+
+       // messageField.setText("Mark is the king" + mqttManager.pitchFor.toString())
+        //messageField.setTopic
+        var offsetJson= JSONObject()
+        offsetJson.put("ptich",mqttManager?.pitch.toString() )
+        offsetJson.put("roll",mqttManager?.pitch.toString() )
+        var topicSend = "IMU/offset"
+        var msg = mqttManager?.pitch.toString() + mqttManager?.roll.toString()
+        mqttManager?.publish(topicSend.toString(), offsetJson.toString())
+
+
+    }
+
+
 }

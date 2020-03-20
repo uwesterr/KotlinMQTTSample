@@ -55,7 +55,7 @@
             android:ems="10"
             android:hint="Enter Topic to subscribe or listen"
             android:inputType="textPersonName"
-            android:text="IMU/pitch"
+            android:text="IMU/#"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/ipAddressField"
@@ -91,4 +91,25 @@
             app:layout_constraintStart_toStartOf="@+id/connectBtn" app:layout_constraintEnd_toEndOf="@+id/connectBtn"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0" app:layout_constraintVertical_bias="0.096"/>
+
+    <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="imuOffset"
+            android:text="Reset"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageHistoryView" />
+
+    <EditText
+            android:id="@+id/rollDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@+id/messageHistoryView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
